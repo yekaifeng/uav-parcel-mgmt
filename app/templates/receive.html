@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% import "bootstrap_wtf.html" as wtf %}
+
+{%block title%}Receive{%endblock%}
+
+{%block main_content%}
+
+	{% if title %}
+	    <h1>{{ title }}</h1>
+	{% else %}
+	    <h1>客户签收</h1>
+    {% endif %}
+
+
+	<div class="row">
+		<div class="span12">
+
+    <form action="/updatereceive/" method="post" name="receiveformlist">
+
+	    <div class="form-actions">
+          <button type="submit" class="btn" onclick="check()">确认签收</button>
+        </div>
+			<table class="table">
+				<tr>
+					<th>是否更新</th>
+					<th>运单号</th>
+					<th>状态</th>
+					<th>配送站</th>
+					<th>姓名</th>
+					<th>电话</th>
+					<th>地址</th>
+					<th>无人机编号</th>
+					<th>接单时间</th>
+				</tr>
+                {% for items in parcels %}
+                <tr>
+                    <td><input type="checkbox" id="{{ items.package_id }}" name="{{ items.package_id }}"></td>
+                    <td>{{ items.package_id }}</td>
+                    <td>{{ items.package_status }}</td>
+                    <td>{{ items.created_office }}</td>
+                    <td>{{ items.customer_name }}</td>
+                    <td>{{ items.customer_phone }}</td>
+                    <td>{{ items.customer_address }}</td>
+                    <td>{{ items.uav_name }}</td>
+                    <td>{{ items.create_pkg_time }}</td>
+                </tr>
+                {% endfor %}
+			</table>
+
+    </form>
+
+        <br><br><br>
+		</div>
+	</div>
+<script language="javascript">
+　var Today=new Date();
+　document.write("今天是 " + Today.getFullYear()+ " 年 " + (Today.getMonth()+1) + " 月 " + Today.getDate() + " 日");
+</script>
+
+<script language="javascript">
+    function check() {
+      var inputs = document.getElementsByTagName("input");
+      var onechecked = false;
+      for(var i=0; i<inputs.length; i++){
+          if(inputs[i].checked) {
+              onechecked = true;
+          }
+      }
+      if(!onechecked){
+          alert("至少选择一条更新状态")
+      }
+    }
+</script>
+{%endblock%}

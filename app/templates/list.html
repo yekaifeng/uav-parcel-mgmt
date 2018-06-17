@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% import "bootstrap_wtf.html" as wtf %}
+
+{%block title%}List{%endblock%}
+
+{%block main_content%}
+
+	<h1>当天包裹列表</h1>
+	
+	<div class="row">
+		<div class="span12">
+
+			<table class="table">
+				<tr>
+					<th>运单号</th>
+					<th>状态</th>
+					<th>配送站</th>
+					<th>姓名</th>
+					<th>电话</th>
+					<th>地址</th>
+					<th>无人机编号</th>
+					<th>接单时间</th>
+				</tr>
+                {% for items in parcels %}
+                <tr>
+                    <td>{{ items.package_id }}</td>
+                    <td>{{ items.package_status }}</td>
+                    <td>{{ items.created_office }}</td>
+                    <td>{{ items.customer_name }}</td>
+                    <td>{{ items.customer_phone }}</td>
+                    <td>{{ items.customer_address }}</td>
+                    <td>{{ items.uav_name }}</td>
+                    <td>{{ items.create_pkg_time }}</td>
+                </tr>
+                {% endfor %}
+			</table>
+        <br><br><br>
+		</div>
+	</div>
+<script language="javascript">
+　var Today=new Date();
+　document.write("今天是 " + Today.getFullYear()+ " 年 " + (Today.getMonth()+1) + " 月 " + Today.getDate() + " 日");
+</script>
+
+{%endblock%}
