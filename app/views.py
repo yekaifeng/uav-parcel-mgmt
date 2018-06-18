@@ -92,16 +92,14 @@ def view(id):
 def depart():
     uavform = UavForm()
     date = datetime.datetime.today().date()
-    todayrecords = Parcel.query.filter_by(date=date).all()
-    filteredrecords = []
+    todayrecords = Parcel.query.filter_by(date=date) \
+        .filter_by(package_status=Parcel.CONST_PKG_STATUS['received']).all()
     if len(todayrecords) is not 0:
         for item in todayrecords:
             strdt = item.create_pkg_time.strftime("%Y-%m-%d %H:%M:%S")
             item.create_pkg_time = strdt
-            if item.package_status == Parcel.CONST_PKG_STATUS['received']:
-                filteredrecords.append(item)
 
-        return render_template('depart.html', parcels=filteredrecords, form=uavform)
+        return render_template('depart.html', parcels=todayrecords, form=uavform)
     else:
         return render_template('depart.html', parcels='', form=uavform)
 
@@ -128,16 +126,14 @@ def updatedepart():
 @login_required
 def arrive():
     date = datetime.datetime.today().date()
-    todayrecords = Parcel.query.filter_by(date=date).all()
-    filteredrecords = []
+    todayrecords = Parcel.query.filter_by(date=date) \
+        .filter_by(package_status=Parcel.CONST_PKG_STATUS['depart']).all()
     if len(todayrecords) is not 0:
         for item in todayrecords:
             strdt = item.create_pkg_time.strftime("%Y-%m-%d %H:%M:%S")
             item.create_pkg_time = strdt
-            if item.package_status == Parcel.CONST_PKG_STATUS['depart']:
-                filteredrecords.append(item)
 
-        return render_template('arrive.html', parcels=filteredrecords)
+        return render_template('arrive.html', parcels=todayrecords)
     else:
         return render_template('arrive.html', parcels='')
 
@@ -162,16 +158,14 @@ def updatearrive():
 @login_required
 def receive():
     date = datetime.datetime.today().date()
-    todayrecords = Parcel.query.filter_by(date=date).all()
-    filteredrecords = []
+    todayrecords = Parcel.query.filter_by(date=date) \
+        .filter_by(package_status=Parcel.CONST_PKG_STATUS['arrival']).all()
     if len(todayrecords) is not 0:
         for item in todayrecords:
             strdt = item.create_pkg_time.strftime("%Y-%m-%d %H:%M:%S")
             item.create_pkg_time = strdt
-            if item.package_status == Parcel.CONST_PKG_STATUS['arrival']:
-                filteredrecords.append(item)
 
-        return render_template('receive.html', parcels=filteredrecords)
+        return render_template('receive.html', parcels=todayrecords)
     else:
         return render_template('receive.html', parcels='')
 
